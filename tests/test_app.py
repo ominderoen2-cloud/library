@@ -5,6 +5,6 @@ def test_create_member(client):
 def test_duplicate(client):
     payload = {"id":"9" , "name":"roy"}
     client.post(json=payload)
-    response = client.post(json=payload)
+    response = client.post("/methods" , json=payload)
     assert response.status_code == 409
     assert response.get_json()["message"] == "member already exists"

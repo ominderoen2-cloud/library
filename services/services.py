@@ -5,7 +5,7 @@ def create_member(data):
     clean_data , error , status = validate_member_data(data)
     if error:
         return error , status
-    success = add_member(clean_data["id"] , clean_data["name"])
+    success = add_member(clean_data["member_id"] , clean_data["name"])
     if not success :
         return {"message":"member not registered"}, 409
     return {"message":"member successfully registered"} , 201
@@ -17,7 +17,7 @@ def remove_member(member_id):
         return {"message":"user not found"} , 404
     return {"message":"successfully deleted"} , 200
 def update_member(data , member_id):
-    clean_data , error , status = validate_member_data(data)
+    clean_data , error , status = validate_member_data(data , require_id=False)
     if  error:
      return error , status
     success = update_member_data(clean_data["name"] , member_id)

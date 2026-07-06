@@ -2,6 +2,47 @@ import psycopg2
 import os 
 from dotenv import load_dotenv
 load_dotenv()
+def create_users_table():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            username TEXT PRIMARY KEY,
+            password TEXT NOT NULL)""")
+    conn.commit()
+    conn.close()
+def add_user(username, password):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            "INSERT INTO users (username, password) VALUES (%s, %s)",
+            (username, password)
+        )
+        conn.commit()
+        return True
+
+    except psycopg2.IntegrityError:
+        return False
+
+    finally:
+        conn.close()
+def get_user(username):
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT username, password FROM users WHERE username = %s",
+        (username,)
+    )
+
+    row = cursor.fetchone()
+
+    conn.close()
+
+    return {"username":row[0] , "password":row[1]}
 def connect_db():
     return psycopg2.connect(os.getenv("DATABASE_URL") , sslmode = "require")
 def create_member_table():

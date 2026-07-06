@@ -1,4 +1,4 @@
-from validators.validators import validate_member_data , validate_book_data , validate_borrow_book_data
+from validators.validators import validate_member_data , validate_book_data , validate_borrow_book_data, validate_return_book_data
 from database.database import add_member , get_all_members , update_member_data , delete_member, connect_db , add_book , list_books, delete_book, add_borrow_record , add_return_record , book_borrowed , book_returned, get_book_status
 
 def create_member(data):
@@ -75,10 +75,10 @@ def borrow_book(data):
         if success :
             book_borrowed(clean_data["book_id"])
             return {"message":"book successfully borrowed"},200
-        return {"message":"sorry borrow request unsuccessful"},400
+        return {"message":"sorry borrow request unsuccessful"},409
 
 def return_book(data , borrow_id ):
-    clean_data , error , status = validate_borrow_book_data(data)
+    clean_data , error , status = validate_return_book_data(data)
     if error :
         return error , status
     success = add_return_record(clean_data["returned_at"] , borrow_id )

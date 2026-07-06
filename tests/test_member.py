@@ -4,23 +4,23 @@ def test_home(client):
     assert response.status_code == 200
     assert response.json == {"status": "api running"}
 def test_create_member(client):
-    response = client.post("/member" , json = {"id":"M103" , "name":"roen"})
+    response = client.post("/member" , json = {"member_id":"M103" , "name":"roen"})
     assert response.status_code == 201
     assert response.json == {"message":"member successfully registered"}
 def test_duplicate_member(client):
-    payload ={"id":"M1o3" , "name":"jim"}
+    payload ={"member_id":"M1o3" , "name":"jim"}
     client.post("/member" ,  json = payload)
     response = client.post("/member" , json = payload)
     assert response.status_code == 409
     assert response.json == {"message":"member not registered"}
 def test_list_member(client):
-    client.post("/member" , json = {"id":"M290" , "name":"ALICE"})
+    client.post("/member" , json = {"member_id":"M290" , "name":"ALICE"})
     response = client.get("/member")
     assert response.status_code == 200
     assert ["M290" , "ALICE"] in response.json
 def test_get_member(client):
     client.post("/member", json={
-        "id": "M300",
+        "member_id": "M300",
         "name": "Bob"
     })
 
@@ -37,7 +37,7 @@ def test_member_not_found(client):
     }
 def test_update_member(client):
     client.post("/member", json={
-        "id": "M400",
+        "member_id": "M400",
         "name": "John"
     })
 
@@ -54,7 +54,7 @@ def test_update_member(client):
     }
 def test_delete_member(client):
     client.post("/member", json={
-        "id": "M500",
+        "member_id": "M500",
         "name": "Mike"
     })
 

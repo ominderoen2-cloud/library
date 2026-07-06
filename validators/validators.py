@@ -1,6 +1,6 @@
 def validate_member_data(data , require_id = True):
 
-    member_id = data.get("id")
+    member_id = data.get("member_id")
     name = data.get("name")
     if require_id:
         if not member_id or name is None:
@@ -8,7 +8,7 @@ def validate_member_data(data , require_id = True):
     if name is None :
         return  None , {"message":"missing credentials"} , 400
     return {
-        "id":member_id , "name":name
+        "member_id":member_id , "name":name
     } , None , None
 def validate_book_data(data , book_available = True):
     book_id = data.get("book_id")
@@ -39,6 +39,16 @@ def validate_borrow_book_data(data , require_id = True):
         "borrow_id":borrow_id ,"member_id":member_id , "book_id":book_id , "book_title":book_title , "borrowed_at":borrowed_at , "returned_at":returned_at
     } , None , None
 
+def validate_return_book_data(data):
+    book_id = data.get("book_id")
+    returned_at = data.get("returned_at")
 
+    if returned_at is None:
+        return None, {"message": "missing credentials"}, 400
+
+    return {
+        "book_id":book_id,
+        "returned_at": returned_at
+    }, None, None
     #library/validators/validators.py
 

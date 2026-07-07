@@ -1,11 +1,12 @@
 from database.database import create_member_table , create_books_table , create_borrow_books_table , users , create_users_table
 from routes.routes import member_bp
 from models.user import User
+import os
 from flask import Flask
 from flask_jwt_extended import JWTManager
 app = Flask(__name__)
 app.register_blueprint(member_bp)
-app.config["JWT_SECRET_KEY"] = "super-secret-key"
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 jwt = JWTManager(app)
 users.append(
     User(
